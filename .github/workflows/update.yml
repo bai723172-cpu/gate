@@ -1,0 +1,110 @@
+name: 更新 VPN Gate 住宅节点
+
+# ---------------------------------------------------------------------------
+# 说明:
+#   1. 频率固定 2 小时一次（不要更勤，这是避免 GitHub Actions 被风控的关键）
+#   2. concurrency 保证同一时间只有一个任务在跑
+#   3. 只有内容真的变了才提交（脚本会输出 OUTPUT_CHANGED=0/1）
+#   4. state/ 目录必须一起提交，否则缓存与镜像记忆每次都会丢
+#   5. push 触发只监听 vpngate.py 和工作流本身的变化 → 提交 public/state 不会造成循环触发
+# ---------------------------------------------------------------------------
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'          # 每 2 小时
+  workflow_dispatch:               # 支持手动触发
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'vpngate.py'
+      - '.github/workflows/update.yml'
+
+permissions:
+  contents: write                  # 提交 public/ 与 state/
+  pages: write                     # 部署 GitHub Pages
+  id-token: write
+
+concurrency:
+  group: vpngate-update
+  cancel-in-progress: false
+
+jobs:
+  # -------------------------------------------------------------------------
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      changed: ${{ steps.chk.outputs.changed }}
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: 安装依赖
+        run: pip install --quiet requests
+
+      - name: 运行抓取与检测
+        env:
+          # --- 检测 Worker（你的 Cloudflare Worker 地址，放 Secrets，别写死在代码里）---
+          CHECK_WORKER: ${{ secrets.CHECK_WORKER }}
+          # --- 只保留住宅节点 ---
+          KEEP_RESIDENTIAL_ONLY: '1'
+          # --- 反风控参数（不要随意调高并发/上限）---
+          CHECK_CONCURRENCY: '8'
+          MAX_CHECK_NODES: '300'
+          CHECK_TIMEOUT: '25'
+          CHECK_CACHE_TTL: '21600'        # 6 小时内检测过的节点直接复用
+          RESIDENTIAL_KEEP_DAYS: '7'      # 好住宅节点留存 7 天
+          MAX_VPNGATE_SOURCES: '3'
+          MAX_EDGE_ENDPOINTS: '30'
+          # --- 其它 ---
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/nodes.txt
+        run: |
+          python vpngate.py 2>&1 | tee run.log
+          echo "================ 关键结果 ================"
+          grep -E 'OUTPUT_CHANGED|可用节点|住宅留存|数据源|验证通过' run.log || true
+
+      - name: 读取变化标记
+        id: chk
+        run: |
+          if grep -q 'OUTPUT_CHANGED=1' run.log; then
+            echo "changed=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 提交结果（仅内容变化时）
+        if: steps.chk.outputs.changed == '1'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public state
+          if git diff --cached --quiet; then
+            echo "没有实际文件变化，跳过提交"
+          else
+            git commit -m "chore: 更新节点 $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+      - name: 上传 Pages 产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  # -------------------------------------------------------------------------
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
