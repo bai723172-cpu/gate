@@ -1,40 +1,32 @@
 name: 更新 VPN Gate 住宅节点
 
 # ---------------------------------------------------------------------------
-# 说明:
-#   1. 频率固定 2 小时一次（不要更勤，这是避免 GitHub Actions 被风控的关键）
-#   2. concurrency 保证同一时间只有一个任务在跑
-#   3. 只有内容真的变了才提交（脚本会输出 OUTPUT_CHANGED=0/1）
-#   4. state/ 目录必须一起提交，否则缓存与镜像记忆每次都会丢
-#   5. push 触发只监听 vpngate.py 和工作流本身的变化 → 提交 public/state 不会造成循环触发
+# 说明（相对旧的 check.yml 的改进）:
+#   1. state/ 用 Actions 缓存持久化 → 检测结果缓存 + 数据源记忆 + 住宅留存库
+#      有了缓存，重复运行几乎不产生真实检测请求（避免 Cloudflare 风控的关键）
+#   2. 并发 32 → 8，超时 90 → 25 秒，单次上限 300 → 大幅降低 Worker 压力
+#   3. 内容没变化就跳过 Pages 部署（省 Actions 额度）
+#   4. 不需要 contents: write，仓库历史不会堆积无用提交
 # ---------------------------------------------------------------------------
 
 on:
   schedule:
-    - cron: '0 */2 * * *'          # 每 2 小时
-  workflow_dispatch:               # 支持手动触发
-  push:
-    branches: [ main, master ]
-    paths:
-      - 'vpngate.py'
-      - '.github/workflows/update.yml'
+    - cron: '0 */2 * * *'        # 每 2 小时（想改成每天一次: '0 0 * * *'）
+  workflow_dispatch:
 
 permissions:
-  contents: write                  # 提交 public/ 与 state/
-  pages: write                     # 部署 GitHub Pages
+  contents: read
+  pages: write
   id-token: write
 
 concurrency:
-  group: vpngate-update
+  group: gate-update
   cancel-in-progress: false
 
 jobs:
-  # -------------------------------------------------------------------------
-  build:
+  update:
     runs-on: ubuntu-latest
     timeout-minutes: 40
-    outputs:
-      changed: ${{ steps.chk.outputs.changed }}
     steps:
       - name: 检出仓库
         uses: actions/checkout@v4
@@ -46,29 +38,36 @@ jobs:
           cache: pip
 
       - name: 安装依赖
-        run: pip install --quiet requests
+        run: pip install -r requirements.txt
+
+      - name: 恢复状态缓存（state/）
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: vpngate-state-${{ github.run_id }}
+          restore-keys: |
+            vpngate-state-
 
       - name: 运行抓取与检测
         env:
-          # --- 检测 Worker（你的 Cloudflare Worker 地址，放 Secrets，别写死在代码里）---
-          CHECK_WORKER: ${{ secrets.CHECK_WORKER }}
-          # --- 只保留住宅节点 ---
+          # 已部署的检测 Worker（沿用你仓库里现有的 Secret 名 DOMAIN）
+          CHECK_WORKER: ${{ secrets.DOMAIN }}
+          # 只保留住宅节点
           KEEP_RESIDENTIAL_ONLY: '1'
-          # --- 反风控参数（不要随意调高并发/上限）---
+          # 反风控参数（不要随意调高）
           CHECK_CONCURRENCY: '8'
           MAX_CHECK_NODES: '300'
           CHECK_TIMEOUT: '25'
-          CHECK_CACHE_TTL: '21600'        # 6 小时内检测过的节点直接复用
-          RESIDENTIAL_KEEP_DAYS: '7'      # 好住宅节点留存 7 天
+          CHECK_CACHE_TTL: '21600'
+          RESIDENTIAL_KEEP_DAYS: '7'
           MAX_VPNGATE_SOURCES: '3'
           MAX_EDGE_ENDPOINTS: '30'
-          # --- 其它 ---
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/nodes.txt
         run: |
           python vpngate.py 2>&1 | tee run.log
           echo "================ 关键结果 ================"
-          grep -E 'OUTPUT_CHANGED|可用节点|住宅留存|数据源|验证通过' run.log || true
+          grep -E 'OUTPUT_CHANGED|可用节点|住宅留存|候选数据源|验证通过|提交检测' run.log || true
 
       - name: 读取变化标记
         id: chk
@@ -79,32 +78,50 @@ jobs:
             echo "changed=0" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 提交结果（仅内容变化时）
+      - name: 保存状态缓存（state/）
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: vpngate-state-${{ github.run_id }}
+
+      - name: 确保 Pages 已启用（首次运行自动开启）
         if: steps.chk.outputs.changed == '1'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public state
-          if git diff --cached --quiet; then
-            echo "没有实际文件变化，跳过提交"
-          else
-            git commit -m "chore: 更新节点 $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git push
+          code=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/pages")
+          echo "Pages API status: $code"
+          if [ "$code" = "404" ]; then
+            echo "首次运行: 启用 GitHub Pages (source = GitHub Actions)"
+            curl -sS -X PUT \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{"build_type":"workflow"}' \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/pages" || true
+            sleep 10
           fi
 
+      - name: 配置 Pages
+        if: steps.chk.outputs.changed == '1'
+        uses: actions/configure-pages@v5
+
       - name: 上传 Pages 产物
+        if: steps.chk.outputs.changed == '1'
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
-  # -------------------------------------------------------------------------
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: 部署到 GitHub Pages
+        if: steps.chk.outputs.changed == '1'
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: 结果汇总
+        if: always()
+        run: |
+          echo "内容是否变化: ${{ steps.chk.outputs.changed }}"
+          echo "订阅地址: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/nodes.txt"
+          echo "部署结果: ${{ steps.deployment.outcome }}"
