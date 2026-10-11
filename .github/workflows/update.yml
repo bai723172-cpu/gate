@@ -1,12 +1,12 @@
 name: 更新 VPN Gate 住宅节点
 
 # ---------------------------------------------------------------------------
-# 说明（相对旧的 check.yml 的改进）:
+# 说明:
 #   1. state/ 用 Actions 缓存持久化 → 检测结果缓存 + 数据源记忆 + 住宅留存库
-#      有了缓存，重复运行几乎不产生真实检测请求（避免 Cloudflare 风控的关键）
-#   2. 并发 32 → 8，超时 90 → 25 秒，单次上限 300 → 大幅降低 Worker 压力
-#   3. 内容没变化就跳过 Pages 部署（省 Actions 额度）
-#   4. 不需要 contents: write，仓库历史不会堆积无用提交
+#      有缓存时重复运行几乎不产生真实检测请求（避免 Cloudflare 风控的关键）
+#   2. 并发 8 / 超时 25s / 单次上限 300 → 大幅降低 Worker 压力
+#   3. Pages 部署「总是执行」（只有内容变化时才说明有更新，但页面必须保证存在）
+#   4. 不需要 contents: write
 # ---------------------------------------------------------------------------
 
 on:
@@ -50,11 +50,8 @@ jobs:
 
       - name: 运行抓取与检测
         env:
-          # 已部署的检测 Worker（沿用你仓库里现有的 Secret 名 DOMAIN）
           CHECK_WORKER: ${{ secrets.DOMAIN }}
-          # 只保留住宅节点
           KEEP_RESIDENTIAL_ONLY: '1'
-          # 反风控参数（不要随意调高）
           CHECK_CONCURRENCY: '8'
           MAX_CHECK_NODES: '300'
           CHECK_TIMEOUT: '25'
@@ -85,8 +82,8 @@ jobs:
           path: state
           key: vpngate-state-${{ github.run_id }}
 
-      - name: 确保 Pages 已启用（首次运行自动开启）
-        if: steps.chk.outputs.changed == '1'
+      - name: 检查 Pages 是否已启用
+        id: pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -94,34 +91,41 @@ jobs:
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/pages")
           echo "Pages API status: $code"
-          if [ "$code" = "404" ]; then
-            echo "首次运行: 启用 GitHub Pages (source = GitHub Actions)"
-            curl -sS -X PUT \
-              -H "Authorization: Bearer $GITHUB_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d '{"build_type":"workflow"}' \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/pages" || true
-            sleep 10
+          if [ "$code" = "200" ]; then
+            echo "ok=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=0" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: 首次启用 Pages
+        if: steps.pages.outputs.ok == '0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -sS -X PUT \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            -d '{"build_type":"workflow"}' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/pages" || true
+          sleep 10
+
       - name: 配置 Pages
-        if: steps.chk.outputs.changed == '1'
         uses: actions/configure-pages@v5
 
       - name: 上传 Pages 产物
-        if: steps.chk.outputs.changed == '1'
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
       - name: 部署到 GitHub Pages
-        if: steps.chk.outputs.changed == '1'
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: 结果汇总
         if: always()
         run: |
-          echo "内容是否变化: ${{ steps.chk.outputs.changed }}"
-          echo "订阅地址: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/nodes.txt"
-          echo "部署结果: ${{ steps.deployment.outcome }}"
+          echo "内容是否变化 : ${{ steps.chk.outputs.changed }}"
+          echo "Pages 之前状态: ${{ steps.pages.outputs.ok }} (1=已启用 0=本次启用)"
+          echo "订阅地址     : https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/nodes.txt"
+          echo "部署结果     : ${{ steps.deployment.outcome }}"
