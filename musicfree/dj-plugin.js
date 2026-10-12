@@ -138,7 +138,7 @@ const SITES = {
     name: "多多DJ",
     base: "http://www.duoduodj.com",
     async search(query, page) {
-      // 该站首次访问会 Set-Cookie(ok / ASPSESSIONID) 并跳转 -> 必须请求两次并转发 cookie
+      // 首次访问会 Set-Cookie(ok / ASPSESSIONID) 并跳转 -> 请求两次并转发 cookie
       const url = `${this.base}/so.asp?k=${encodeURIComponent(query)}`;
       const opt = {
         headers: { ...HEADERS, Referer: this.base + "/" },
@@ -148,34 +148,38 @@ const SITES = {
       };
       const r1 = await http.get(url, opt);
       const sc = r1.headers["set-cookie"];
-      const cookie = Array.isArray(sc) ? sc.map((c) => String(c).split(";")[0]).join("; ") : (sc ? String(sc).split(";")[0] : "ok=1");
+      const cookie = Array.isArray(sc)
+        ? sc.map((c) => String(c).split(";")[0]).join("; ")
+        : sc
+        ? String(sc).split(";")[0]
+        : "ok=1";
       const r2 = await http.get(url, { ...opt, headers: { ...opt.headers, Cookie: cookie } });
-      const html = r2.data;
-      const $ = cheerio.load(html);
+      const $ = cheerio.load(r2.data);
       const list = [];
-      $("a").each((_, el) => {
+      $('a[href*="/dj/"]').each((_, el) => {
         const href = $(el).attr("href") || "";
+        const m = href.match(/\/dj\/([^\/]+)\.html/);
+        if (!m) return;
         const title = ($(el).attr("title") || $(el).text() || "").trim();
         if (!title || title.length < 4) return;
-        if (!/(music|play|dj|\/\d+)/i.test(href)) return;
-        const idm = href.match(/[?&]?id=(\d+)/) || href.match(/\/(\d+)\.html/);
-        if (!idm) return;
-        if (list.some((x) => x.songId === idm[1])) return;
-        list.push({ songId: idm[1], title, artist: title.split("-")[0].trim() || "DJ", href });
+        if (list.some((x) => x.songId === m[1])) return;
+        list.push({ songId: m[1], title, artist: title.split("-")[0].trim() || "DJ" });
       });
-      return { list: list.slice(0, 30), isEnd: list.length === 0 };
+      return { list, isEnd: list.length === 0 };
     },
-    async media(songId, extra) {
-      const href = (extra && extra.href) || "";
-      const url = href.startsWith("http") ? href : this.base + "/" + href.replace(/^\//, "");
-      if (!url) return null;
-      const { data: html } = await http.get(url, {
+    async media(songId) {
+      // 详情页里有 var KqDjurl="/djurlplays/xxxx.mp3"
+      const page = `${this.base}/dj/${songId}.html`;
+      const r = await http.get(page, {
         headers: { ...HEADERS, Referer: this.base + "/", Cookie: "ok=1" },
         responseType: "text",
         transformResponse: [(d) => d],
+        validateStatus: () => true,
       });
-      const m = String(html).match(/https?:\/\/[^\s"'<>]+\.(?:mp3|m4a|m3u8)[^\s"'<>]*/i);
-      return m ? m[0].replace(/&amp;/g, "&") : null;
+      const m = String(r.data).match(/KqDjurl\s*=\s*["']([^"']+)["']/);
+      if (!m) return null;
+      const p = m[1];
+      return p.startsWith("http") ? p : this.base + (p.startsWith("/") ? p : "/" + p);
     },
   },
 
@@ -243,7 +247,7 @@ const SITE_ORDER = ["ddddj", "djuu", "duoduodj", "dj82"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.2.0",
+  version: "0.3.0",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
