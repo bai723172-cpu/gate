@@ -74,6 +74,12 @@ APIS = [
     ("all",  "https://www.wetest.vip/page/cloudflare/address_v4.html"),
     ("all",  "https://ipdb.api.030101.xyz/?type=bestcf&country=true"),
 ]
+CF_OFFICIAL_V4_FALLBACK = [   # 官方 ips-v4 的内置副本（拉取失败时兜底）
+    "173.245.48.0/20", "103.21.244.0/22", "103.22.200.0/22", "103.31.4.0/22",
+    "141.101.64.0/18", "108.162.192.0/18", "190.93.240.0/20", "188.114.96.0/20",
+    "197.234.240.0/22", "198.41.128.0/17", "162.158.0.0/15", "104.16.0.0/13",
+    "104.24.0.0/14", "172.64.0.0/13", "131.0.72.0/22",
+]
 OFFICIAL_RANGES = "https://www.cloudflare.com/ips-v4"
 OFFICIAL_SAMPLE = 40             # 从官方网段随机取多少个做补充
 
@@ -157,6 +163,39 @@ def fetch_candidates():
             log("  v %-46s 取样 %d 个" % ("cloudflare.com/ips-v4", min(OFFICIAL_SAMPLE, len(pool))))
     except Exception as exc:
         log("  x 官方网段 %s" % str(exc)[:50])
+    # ── 过滤：只保留落在 Cloudflare 官方网段内的 IP（剔除第三方 API 混入的假 IP）──
+    try:
+        import ipaddress
+        src = "在线"
+        try:
+            rr = session.get(OFFICIAL_RANGES, timeout=20)
+            nets = [ipaddress.ip_network(x.strip()) for x in rr.text.split("\n") if "/" in x]
+            if len(nets) < 5:
+                raise ValueError("官方网段数量异常 %d" % len(nets))
+        except Exception as e1:
+            src = "内置兜底"
+            nets = [ipaddress.ip_network(x) for x in CF_OFFICIAL_V4_FALLBACK]
+            log("  ! 在线拉取官方网段失败（%s），改用内置 %d 个网段" % (type(e1).__name__, len(nets)))
+        dropped_total = 0
+        for k in list(pools.keys()):
+            kept, dropped = [], 0
+            for item in pools[k]:
+                ip = item[0] if isinstance(item, (tuple, list)) else item
+                try:
+                    if any(ipaddress.ip_address(ip) in n for n in nets):
+                        kept.append(item)
+                    else:
+                        dropped += 1
+                except Exception:
+                    dropped += 1
+            pools[k] = kept
+            dropped_total += dropped
+            if dropped:
+                log("  ! %-5s 剔除 %d 个非 Cloudflare 网段 IP" % (k, dropped))
+        log("  官方网段过滤(%s): 剔除 %d 个，保留 %d 个（%d 个官方网段）" % (src,
+            dropped_total, sum(len(v) for v in pools.values()), len(nets)))
+    except Exception as e:
+        log("  ! 官方网段过滤失败（跳过）: %s" % e)
     return pools
 
 
