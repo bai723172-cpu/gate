@@ -252,8 +252,6 @@ const SITES = {
       return m ? m[0].replace(/&amp;/g, "&") : null;
     },
   },
-};
-
   djnet: {
     name: "西西DJ",
     base: "https://www.dj.net",
@@ -290,6 +288,7 @@ const SITES = {
       return m ? m[0].replace(/&amp;/g, "&") : null;
     },
   },
+};
 
 const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 
