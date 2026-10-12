@@ -1,1312 +1,1438 @@
 {
- "updated_at": "2026-10-12 13:53:32",
- "tested": 165,
- "ok": 126,
+ "updated_at": "2026-10-12 23:03:53",
+ "tested": 182,
+ "ok": 144,
  "output": 60,
  "top": [
   {
    "group": "ct",
-   "ip": "172.66.0.100",
+   "ip": "188.164.248.83",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 258
+   "tcp_ms": 6,
+   "tls_ms": 320
   },
   {
    "group": "cu",
-   "ip": "172.67.66.248",
+   "ip": "104.26.5.222",
    "port": 443,
-   "tcp_ms": 25,
-   "tls_ms": 256
+   "tcp_ms": 38,
+   "tls_ms": 304
   },
   {
    "group": "cmcc",
-   "ip": "172.66.0.181",
+   "ip": "104.18.33.220",
    "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 228
+   "tcp_ms": 12,
+   "tls_ms": 131
   },
   {
    "group": "all",
    "ip": "172.64.82.114",
    "port": 443,
-   "tcp_ms": 39,
-   "tls_ms": 303
+   "tcp_ms": 27,
+   "tls_ms": 174
   },
   {
    "group": "ct",
-   "ip": "172.66.2.246",
+   "ip": "172.66.1.28",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 250
+   "tcp_ms": 6,
+   "tls_ms": 332
   },
   {
    "group": "cu",
-   "ip": "172.67.65.216",
+   "ip": "172.67.79.140",
    "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 264
+   "tcp_ms": 28,
+   "tls_ms": 287
   },
   {
    "group": "cmcc",
-   "ip": "104.19.34.30",
+   "ip": "104.17.159.166",
    "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 220
+   "tcp_ms": 20,
+   "tls_ms": 231
   },
   {
    "group": "all",
    "ip": "198.41.194.162",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 138
+   "tcp_ms": 8,
+   "tls_ms": 172
   },
   {
    "group": "ct",
-   "ip": "104.17.144.209",
+   "ip": "188.164.248.219",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 237
+   "tcp_ms": 6,
+   "tls_ms": 314
   },
   {
    "group": "cu",
-   "ip": "104.26.8.33",
+   "ip": "104.26.9.163",
    "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 248
+   "tcp_ms": 40,
+   "tls_ms": 366
   },
   {
    "group": "cmcc",
-   "ip": "104.17.116.68",
+   "ip": "104.17.190.89",
    "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 262
+   "tcp_ms": 13,
+   "tls_ms": 166
   },
   {
    "group": "all",
    "ip": "198.41.208.15",
    "port": 443,
-   "tcp_ms": 34,
-   "tls_ms": 244
+   "tcp_ms": 32,
+   "tls_ms": 274
   },
   {
    "group": "ct",
-   "ip": "188.164.248.67",
+   "ip": "8.35.211.16",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 254
+   "tcp_ms": 5,
+   "tls_ms": 308
   },
   {
    "group": "cu",
-   "ip": "172.67.67.68",
+   "ip": "172.67.73.27",
    "port": 443,
-   "tcp_ms": 26,
-   "tls_ms": 260
+   "tcp_ms": 31,
+   "tls_ms": 286
   },
   {
    "group": "cmcc",
-   "ip": "104.17.26.105",
+   "ip": "104.17.101.116",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 288
+   "tcp_ms": 24,
+   "tls_ms": 281
   },
   {
    "group": "all",
    "ip": "162.159.140.85",
    "port": 443,
    "tcp_ms": 9,
-   "tls_ms": 143
+   "tls_ms": 221
   },
   {
    "group": "ct",
-   "ip": "8.35.211.54",
+   "ip": "8.35.211.152",
    "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 246
+   "tcp_ms": 5,
+   "tls_ms": 326
   },
   {
    "group": "cu",
-   "ip": "172.67.76.177",
+   "ip": "172.67.70.132",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 127
+   "tcp_ms": 28,
+   "tls_ms": 305
   },
   {
    "group": "cmcc",
-   "ip": "104.17.168.29",
+   "ip": "104.17.27.206",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 264
+   "tcp_ms": 32,
+   "tls_ms": 329
   },
   {
    "group": "all",
    "ip": "172.64.52.127",
    "port": 443,
-   "tcp_ms": 33,
-   "tls_ms": 314
+   "tcp_ms": 6,
+   "tls_ms": 201
   },
   {
    "group": "ct",
-   "ip": "104.18.33.251",
+   "ip": "8.35.211.172",
    "port": 443,
    "tcp_ms": 10,
-   "tls_ms": 258
+   "tls_ms": 310
   },
   {
    "group": "cu",
-   "ip": "172.67.71.170",
+   "ip": "172.67.67.52",
    "port": 443,
-   "tcp_ms": 23,
-   "tls_ms": 191
+   "tcp_ms": 28,
+   "tls_ms": 330
   },
   {
    "group": "cmcc",
-   "ip": "104.16.151.177",
+   "ip": "104.17.147.84",
    "port": 443,
-   "tcp_ms": 10,
-   "tls_ms": 235
+   "tcp_ms": 12,
+   "tls_ms": 229
   },
   {
    "group": "all",
    "ip": "162.159.61.183",
    "port": 443,
-   "tcp_ms": 18,
-   "tls_ms": 290
+   "tcp_ms": 6,
+   "tls_ms": 246
   },
   {
    "group": "ct",
-   "ip": "104.18.33.157",
+   "ip": "8.35.211.20",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 281
+   "tcp_ms": 6,
+   "tls_ms": 303
   },
   {
    "group": "cu",
-   "ip": "172.67.74.62",
+   "ip": "104.26.15.188",
    "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 134
+   "tcp_ms": 29,
+   "tls_ms": 307
   },
   {
    "group": "cmcc",
-   "ip": "104.16.159.35",
+   "ip": "172.66.0.81",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 252
+   "tcp_ms": 12,
+   "tls_ms": 178
   },
   {
    "group": "all",
    "ip": "172.64.91.69",
    "port": 443,
-   "tcp_ms": 35,
-   "tls_ms": 280
+   "tcp_ms": 29,
+   "tls_ms": 264
   },
   {
    "group": "ct",
-   "ip": "188.164.248.17",
+   "ip": "104.18.33.103",
    "port": 443,
-   "tcp_ms": 18,
-   "tls_ms": 235
+   "tcp_ms": 7,
+   "tls_ms": 320
   },
   {
    "group": "cu",
-   "ip": "172.67.75.230",
+   "ip": "104.26.13.59",
    "port": 443,
-   "tcp_ms": 22,
-   "tls_ms": 257
+   "tcp_ms": 31,
+   "tls_ms": 299
   },
   {
    "group": "cmcc",
-   "ip": "104.17.108.4",
+   "ip": "104.17.171.145",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 236
+   "tcp_ms": 16,
+   "tls_ms": 250
   },
   {
    "group": "all",
    "ip": "172.64.48.226",
    "port": 443,
-   "tcp_ms": 33,
-   "tls_ms": 257
+   "tcp_ms": 8,
+   "tls_ms": 235
   },
   {
    "group": "ct",
-   "ip": "172.66.3.90",
+   "ip": "188.164.248.4",
    "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 244
+   "tcp_ms": 9,
+   "tls_ms": 317
   },
   {
    "group": "cu",
-   "ip": "104.26.10.21",
+   "ip": "172.67.68.14",
    "port": 443,
-   "tcp_ms": 18,
-   "tls_ms": 233
+   "tcp_ms": 36,
+   "tls_ms": 359
   },
   {
    "group": "cmcc",
-   "ip": "104.17.157.37",
+   "ip": "104.19.150.150",
    "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 301
+   "tcp_ms": 14,
+   "tls_ms": 200
   },
   {
    "group": "all",
    "ip": "162.159.24.131",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 288
+   "tcp_ms": 9,
+   "tls_ms": 247
   },
   {
    "group": "ct",
-   "ip": "188.164.248.32",
+   "ip": "104.18.33.123",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 256
+   "tcp_ms": 15,
+   "tls_ms": 305
   },
   {
    "group": "cu",
-   "ip": "104.26.9.132",
+   "ip": "104.26.5.52",
    "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 158
+   "tcp_ms": 30,
+   "tls_ms": 309
   },
   {
    "group": "cmcc",
-   "ip": "104.17.214.224",
+   "ip": "104.16.251.133",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 126
+   "tcp_ms": 21,
+   "tls_ms": 296
   },
   {
    "group": "all",
    "ip": "173.245.49.194",
    "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 251
+   "tcp_ms": 13,
+   "tls_ms": 240
   },
   {
    "group": "ct",
-   "ip": "104.17.152.60",
+   "ip": "172.66.1.226",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 253
+   "tcp_ms": 6,
+   "tls_ms": 320
   },
   {
    "group": "cu",
-   "ip": "172.67.68.33",
+   "ip": "172.67.74.219",
    "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 314
+   "tcp_ms": 42,
+   "tls_ms": 375
   },
   {
    "group": "cmcc",
-   "ip": "104.16.153.198",
+   "ip": "104.16.152.143",
    "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 141
+   "tcp_ms": 35,
+   "tls_ms": 229
   },
   {
    "group": "all",
    "ip": "104.26.4.90",
    "port": 443,
-   "tcp_ms": 26,
-   "tls_ms": 263
+   "tcp_ms": 31,
+   "tls_ms": 289
   },
   {
    "group": "ct",
-   "ip": "104.17.146.102",
+   "ip": "104.18.33.8",
    "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 254
+   "tcp_ms": 12,
+   "tls_ms": 314
   },
   {
    "group": "cu",
-   "ip": "104.26.2.105",
+   "ip": "104.26.15.206",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 193
+   "tcp_ms": 33,
+   "tls_ms": 336
   },
   {
    "group": "cmcc",
-   "ip": "104.16.148.37",
+   "ip": "104.18.33.95",
    "port": 443,
    "tcp_ms": 8,
-   "tls_ms": 151
+   "tls_ms": 245
   },
   {
    "group": "all",
    "ip": "162.159.136.89",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 274
+   "tcp_ms": 13,
+   "tls_ms": 220
   },
   {
    "group": "ct",
-   "ip": "8.35.211.9",
+   "ip": "8.35.211.163",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 264
+   "tcp_ms": 8,
+   "tls_ms": 327
   },
   {
    "group": "cu",
-   "ip": "172.67.66.186",
+   "ip": "172.67.78.208",
    "port": 443,
-   "tcp_ms": 24,
-   "tls_ms": 287
+   "tcp_ms": 33,
+   "tls_ms": 310
   },
   {
    "group": "cmcc",
-   "ip": "104.17.158.17",
+   "ip": "104.17.60.241",
    "port": 443,
-   "tcp_ms": 36,
-   "tls_ms": 149
+   "tcp_ms": 21,
+   "tls_ms": 222
   },
   {
    "group": "all",
    "ip": "162.159.58.65",
    "port": 443,
-   "tcp_ms": 21,
-   "tls_ms": 308
+   "tcp_ms": 6,
+   "tls_ms": 230
   },
   {
    "group": "ct",
-   "ip": "104.18.33.129",
+   "ip": "188.164.248.53",
    "port": 443,
-   "tcp_ms": 28,
-   "tls_ms": 241
+   "tcp_ms": 8,
+   "tls_ms": 317
   },
   {
    "group": "cu",
-   "ip": "104.26.4.224",
+   "ip": "172.67.64.85",
    "port": 443,
-   "tcp_ms": 21,
-   "tls_ms": 259
+   "tcp_ms": 44,
+   "tls_ms": 376
   },
   {
    "group": "cmcc",
-   "ip": "104.19.35.3",
+   "ip": "104.17.174.104",
    "port": 443,
-   "tcp_ms": 31,
-   "tls_ms": 212
+   "tcp_ms": 46,
+   "tls_ms": 311
   },
   {
    "group": "all",
    "ip": "172.64.229.7",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 213
+   "tcp_ms": 18,
+   "tls_ms": 226
   },
   {
    "group": "ct",
-   "ip": "188.164.248.205",
+   "ip": "172.66.2.66",
    "port": 443,
-   "tcp_ms": 15,
-   "tls_ms": 266
+   "tcp_ms": 6,
+   "tls_ms": 293
   },
   {
    "group": "cu",
-   "ip": "104.26.4.252",
+   "ip": "172.67.65.139",
    "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 255
+   "tcp_ms": 28,
+   "tls_ms": 318
   },
   {
    "group": "cmcc",
-   "ip": "104.16.155.243",
+   "ip": "104.17.217.109",
    "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 111
+   "tcp_ms": 25,
+   "tls_ms": 312
   },
   {
    "group": "all",
    "ip": "104.26.5.134",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 239
+   "tcp_ms": 38,
+   "tls_ms": 314
   }
  ],
  "all_ok": [
   {
    "group": "ct",
-   "ip": "172.66.0.100",
+   "ip": "188.164.248.83",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 258
+   "tcp_ms": 6,
+   "tls_ms": 320
   },
   {
    "group": "ct",
-   "ip": "172.66.2.246",
+   "ip": "172.66.1.28",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 250
+   "tcp_ms": 6,
+   "tls_ms": 332
   },
   {
    "group": "ct",
-   "ip": "104.17.144.209",
+   "ip": "188.164.248.219",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 237
+   "tcp_ms": 6,
+   "tls_ms": 314
   },
   {
    "group": "ct",
-   "ip": "188.164.248.67",
+   "ip": "8.35.211.16",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 254
+   "tcp_ms": 5,
+   "tls_ms": 308
   },
   {
    "group": "ct",
-   "ip": "8.35.211.54",
+   "ip": "8.35.211.152",
    "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 246
+   "tcp_ms": 5,
+   "tls_ms": 326
   },
   {
    "group": "ct",
-   "ip": "104.18.33.251",
+   "ip": "8.35.211.172",
    "port": 443,
    "tcp_ms": 10,
-   "tls_ms": 258
+   "tls_ms": 310
   },
   {
    "group": "ct",
-   "ip": "104.18.33.157",
+   "ip": "8.35.211.20",
+   "port": 443,
+   "tcp_ms": 6,
+   "tls_ms": 303
+  },
+  {
+   "group": "ct",
+   "ip": "104.18.33.103",
+   "port": 443,
+   "tcp_ms": 7,
+   "tls_ms": 320
+  },
+  {
+   "group": "ct",
+   "ip": "188.164.248.4",
+   "port": 443,
+   "tcp_ms": 9,
+   "tls_ms": 317
+  },
+  {
+   "group": "ct",
+   "ip": "104.18.33.123",
+   "port": 443,
+   "tcp_ms": 15,
+   "tls_ms": 305
+  },
+  {
+   "group": "ct",
+   "ip": "172.66.1.226",
+   "port": 443,
+   "tcp_ms": 6,
+   "tls_ms": 320
+  },
+  {
+   "group": "ct",
+   "ip": "104.18.33.8",
    "port": 443,
    "tcp_ms": 12,
-   "tls_ms": 281
+   "tls_ms": 314
   },
   {
    "group": "ct",
-   "ip": "188.164.248.17",
+   "ip": "8.35.211.163",
    "port": 443,
-   "tcp_ms": 18,
-   "tls_ms": 235
+   "tcp_ms": 8,
+   "tls_ms": 327
   },
   {
    "group": "ct",
-   "ip": "172.66.3.90",
+   "ip": "188.164.248.53",
+   "port": 443,
+   "tcp_ms": 8,
+   "tls_ms": 317
+  },
+  {
+   "group": "ct",
+   "ip": "172.66.2.66",
+   "port": 443,
+   "tcp_ms": 6,
+   "tls_ms": 293
+  },
+  {
+   "group": "ct",
+   "ip": "104.17.148.187",
+   "port": 443,
+   "tcp_ms": 31,
+   "tls_ms": 361
+  },
+  {
+   "group": "ct",
+   "ip": "172.66.3.3",
+   "port": 443,
+   "tcp_ms": 17,
+   "tls_ms": 323
+  },
+  {
+   "group": "ct",
+   "ip": "8.35.211.42",
    "port": 443,
    "tcp_ms": 13,
-   "tls_ms": 244
+   "tls_ms": 309
   },
   {
    "group": "ct",
-   "ip": "188.164.248.32",
+   "ip": "104.18.33.212",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 256
+   "tcp_ms": 13,
+   "tls_ms": 302
   },
   {
    "group": "ct",
-   "ip": "104.17.152.60",
-   "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 253
-  },
-  {
-   "group": "ct",
-   "ip": "104.17.146.102",
-   "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 254
-  },
-  {
-   "group": "ct",
-   "ip": "8.35.211.9",
-   "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 264
-  },
-  {
-   "group": "ct",
-   "ip": "104.18.33.129",
-   "port": 443,
-   "tcp_ms": 28,
-   "tls_ms": 241
-  },
-  {
-   "group": "ct",
-   "ip": "188.164.248.205",
-   "port": 443,
-   "tcp_ms": 15,
-   "tls_ms": 266
-  },
-  {
-   "group": "ct",
-   "ip": "188.164.248.93",
-   "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 255
-  },
-  {
-   "group": "ct",
-   "ip": "104.18.33.126",
-   "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 264
-  },
-  {
-   "group": "ct",
-   "ip": "188.164.248.246",
-   "port": 443,
-   "tcp_ms": 15,
-   "tls_ms": 236
-  },
-  {
-   "group": "ct",
-   "ip": "104.18.33.213",
-   "port": 443,
-   "tcp_ms": 22,
-   "tls_ms": 247
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.66.248",
-   "port": 443,
-   "tcp_ms": 25,
-   "tls_ms": 256
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.65.216",
-   "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 264
-  },
-  {
-   "group": "cu",
-   "ip": "104.26.8.33",
-   "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 248
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.67.68",
-   "port": 443,
-   "tcp_ms": 26,
-   "tls_ms": 260
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.76.177",
-   "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 127
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.71.170",
-   "port": 443,
-   "tcp_ms": 23,
-   "tls_ms": 191
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.74.62",
-   "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 134
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.75.230",
-   "port": 443,
-   "tcp_ms": 22,
-   "tls_ms": 257
-  },
-  {
-   "group": "cu",
-   "ip": "104.26.10.21",
-   "port": 443,
-   "tcp_ms": 18,
-   "tls_ms": 233
-  },
-  {
-   "group": "cu",
-   "ip": "104.26.9.132",
-   "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 158
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.68.33",
+   "ip": "8.35.211.48",
    "port": 443,
    "tcp_ms": 20,
    "tls_ms": 314
   },
   {
-   "group": "cu",
-   "ip": "104.26.2.105",
+   "group": "ct",
+   "ip": "8.35.211.7",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 193
+   "tcp_ms": 9,
+   "tls_ms": 309
+  },
+  {
+   "group": "ct",
+   "ip": "8.35.211.174",
+   "port": 443,
+   "tcp_ms": 12,
+   "tls_ms": 324
+  },
+  {
+   "group": "ct",
+   "ip": "104.17.157.184",
+   "port": 443,
+   "tcp_ms": 54,
+   "tls_ms": 310
+  },
+  {
+   "group": "ct",
+   "ip": "172.66.3.33",
+   "port": 443,
+   "tcp_ms": 13,
+   "tls_ms": 323
+  },
+  {
+   "group": "ct",
+   "ip": "8.35.211.167",
+   "port": 443,
+   "tcp_ms": 8,
+   "tls_ms": 59
   },
   {
    "group": "cu",
-   "ip": "172.67.66.186",
+   "ip": "104.26.5.222",
    "port": 443,
-   "tcp_ms": 24,
+   "tcp_ms": 38,
+   "tls_ms": 304
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.79.140",
+   "port": 443,
+   "tcp_ms": 28,
    "tls_ms": 287
   },
   {
    "group": "cu",
-   "ip": "104.26.4.224",
+   "ip": "104.26.9.163",
    "port": 443,
-   "tcp_ms": 21,
-   "tls_ms": 259
+   "tcp_ms": 40,
+   "tls_ms": 366
   },
   {
    "group": "cu",
-   "ip": "104.26.4.252",
-   "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 255
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.66.244",
-   "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 257
-  },
-  {
-   "group": "cu",
-   "ip": "104.26.0.0",
-   "port": 443,
-   "tcp_ms": 24,
-   "tls_ms": 240
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.72.90",
-   "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 218
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.78.62",
-   "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 237
-  },
-  {
-   "group": "cu",
-   "ip": "172.67.75.76",
-   "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 209
-  },
-  {
-   "group": "cmcc",
-   "ip": "172.66.0.181",
-   "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 228
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.19.34.30",
-   "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 220
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.116.68",
-   "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 262
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.26.105",
-   "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 288
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.168.29",
-   "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 264
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.16.151.177",
-   "port": 443,
-   "tcp_ms": 10,
-   "tls_ms": 235
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.16.159.35",
-   "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 252
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.108.4",
-   "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 236
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.157.37",
-   "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 301
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.214.224",
-   "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 126
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.16.153.198",
-   "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 141
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.16.148.37",
-   "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 151
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.158.17",
-   "port": 443,
-   "tcp_ms": 36,
-   "tls_ms": 149
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.19.35.3",
+   "ip": "172.67.73.27",
    "port": 443,
    "tcp_ms": 31,
-   "tls_ms": 212
+   "tls_ms": 286
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.70.132",
+   "port": 443,
+   "tcp_ms": 28,
+   "tls_ms": 305
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.67.52",
+   "port": 443,
+   "tcp_ms": 28,
+   "tls_ms": 330
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.15.188",
+   "port": 443,
+   "tcp_ms": 29,
+   "tls_ms": 307
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.13.59",
+   "port": 443,
+   "tcp_ms": 31,
+   "tls_ms": 299
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.68.14",
+   "port": 443,
+   "tcp_ms": 36,
+   "tls_ms": 359
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.5.52",
+   "port": 443,
+   "tcp_ms": 30,
+   "tls_ms": 309
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.74.219",
+   "port": 443,
+   "tcp_ms": 42,
+   "tls_ms": 375
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.15.206",
+   "port": 443,
+   "tcp_ms": 33,
+   "tls_ms": 336
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.78.208",
+   "port": 443,
+   "tcp_ms": 33,
+   "tls_ms": 310
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.64.85",
+   "port": 443,
+   "tcp_ms": 44,
+   "tls_ms": 376
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.65.139",
+   "port": 443,
+   "tcp_ms": 28,
+   "tls_ms": 318
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.65.145",
+   "port": 443,
+   "tcp_ms": 32,
+   "tls_ms": 369
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.4.135",
+   "port": 443,
+   "tcp_ms": 34,
+   "tls_ms": 302
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.71.111",
+   "port": 443,
+   "tcp_ms": 39,
+   "tls_ms": 302
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.3.63",
+   "port": 443,
+   "tcp_ms": 38,
+   "tls_ms": 297
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.66.117",
+   "port": 443,
+   "tcp_ms": 50,
+   "tls_ms": 342
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.13.187",
+   "port": 443,
+   "tcp_ms": 39,
+   "tls_ms": 354
+  },
+  {
+   "group": "cu",
+   "ip": "172.67.68.197",
+   "port": 443,
+   "tcp_ms": 38,
+   "tls_ms": 305
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.15.201",
+   "port": 443,
+   "tcp_ms": 48,
+   "tls_ms": 330
+  },
+  {
+   "group": "cu",
+   "ip": "104.26.14.255",
+   "port": 443,
+   "tcp_ms": 43,
+   "tls_ms": 277
   },
   {
    "group": "cmcc",
-   "ip": "104.16.155.243",
+   "ip": "104.18.33.220",
    "port": 443,
-   "tcp_ms": 14,
-   "tls_ms": 111
+   "tcp_ms": 12,
+   "tls_ms": 131
   },
   {
    "group": "cmcc",
-   "ip": "104.19.32.199",
+   "ip": "104.17.159.166",
    "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 98
-  },
-  {
-   "group": "cmcc",
-   "ip": "198.41.208.93",
-   "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 128
-  },
-  {
-   "group": "cmcc",
-   "ip": "104.17.55.124",
-   "port": 443,
-   "tcp_ms": 15,
+   "tcp_ms": 20,
    "tls_ms": 231
   },
   {
    "group": "cmcc",
-   "ip": "104.16.152.97",
+   "ip": "104.17.190.89",
    "port": 443,
    "tcp_ms": 13,
-   "tls_ms": 212
+   "tls_ms": 166
   },
   {
    "group": "cmcc",
-   "ip": "104.16.240.7",
+   "ip": "104.17.101.116",
    "port": 443,
-   "tcp_ms": 31,
-   "tls_ms": 265
+   "tcp_ms": 24,
+   "tls_ms": 281
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.27.206",
+   "port": 443,
+   "tcp_ms": 32,
+   "tls_ms": 329
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.147.84",
+   "port": 443,
+   "tcp_ms": 12,
+   "tls_ms": 229
+  },
+  {
+   "group": "cmcc",
+   "ip": "172.66.0.81",
+   "port": 443,
+   "tcp_ms": 12,
+   "tls_ms": 178
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.171.145",
+   "port": 443,
+   "tcp_ms": 16,
+   "tls_ms": 250
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.19.150.150",
+   "port": 443,
+   "tcp_ms": 14,
+   "tls_ms": 200
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.16.251.133",
+   "port": 443,
+   "tcp_ms": 21,
+   "tls_ms": 296
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.16.152.143",
+   "port": 443,
+   "tcp_ms": 35,
+   "tls_ms": 229
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.18.33.95",
+   "port": 443,
+   "tcp_ms": 8,
+   "tls_ms": 245
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.60.241",
+   "port": 443,
+   "tcp_ms": 21,
+   "tls_ms": 222
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.174.104",
+   "port": 443,
+   "tcp_ms": 46,
+   "tls_ms": 311
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.217.109",
+   "port": 443,
+   "tcp_ms": 25,
+   "tls_ms": 312
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.148.32",
+   "port": 443,
+   "tcp_ms": 17,
+   "tls_ms": 248
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.210.111",
+   "port": 443,
+   "tcp_ms": 18,
+   "tls_ms": 249
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.145.165",
+   "port": 443,
+   "tcp_ms": 21,
+   "tls_ms": 286
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.187.253",
+   "port": 443,
+   "tcp_ms": 17,
+   "tls_ms": 235
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.211.198",
+   "port": 443,
+   "tcp_ms": 30,
+   "tls_ms": 303
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.184.246",
+   "port": 443,
+   "tcp_ms": 26,
+   "tls_ms": 242
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.17.219.231",
+   "port": 443,
+   "tcp_ms": 26,
+   "tls_ms": 256
+  },
+  {
+   "group": "cmcc",
+   "ip": "198.41.208.80",
+   "port": 443,
+   "tcp_ms": 21,
+   "tls_ms": 164
+  },
+  {
+   "group": "cmcc",
+   "ip": "104.19.35.147",
+   "port": 443,
+   "tcp_ms": 56,
+   "tls_ms": 321
   },
   {
    "group": "all",
    "ip": "172.64.82.114",
    "port": 443,
-   "tcp_ms": 39,
-   "tls_ms": 303
+   "tcp_ms": 27,
+   "tls_ms": 174
   },
   {
    "group": "all",
    "ip": "198.41.194.162",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 138
+   "tcp_ms": 8,
+   "tls_ms": 172
   },
   {
    "group": "all",
    "ip": "198.41.208.15",
    "port": 443,
-   "tcp_ms": 34,
-   "tls_ms": 244
+   "tcp_ms": 32,
+   "tls_ms": 274
   },
   {
    "group": "all",
    "ip": "162.159.140.85",
    "port": 443,
    "tcp_ms": 9,
-   "tls_ms": 143
+   "tls_ms": 221
   },
   {
    "group": "all",
    "ip": "172.64.52.127",
    "port": 443,
-   "tcp_ms": 33,
-   "tls_ms": 314
+   "tcp_ms": 6,
+   "tls_ms": 201
   },
   {
    "group": "all",
    "ip": "162.159.61.183",
    "port": 443,
-   "tcp_ms": 18,
-   "tls_ms": 290
+   "tcp_ms": 6,
+   "tls_ms": 246
   },
   {
    "group": "all",
    "ip": "172.64.91.69",
    "port": 443,
-   "tcp_ms": 35,
-   "tls_ms": 280
+   "tcp_ms": 29,
+   "tls_ms": 264
   },
   {
    "group": "all",
    "ip": "172.64.48.226",
    "port": 443,
-   "tcp_ms": 33,
-   "tls_ms": 257
+   "tcp_ms": 8,
+   "tls_ms": 235
   },
   {
    "group": "all",
    "ip": "162.159.24.131",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 288
+   "tcp_ms": 9,
+   "tls_ms": 247
   },
   {
    "group": "all",
    "ip": "173.245.49.194",
    "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 251
+   "tcp_ms": 13,
+   "tls_ms": 240
   },
   {
    "group": "all",
    "ip": "104.26.4.90",
    "port": 443,
-   "tcp_ms": 26,
-   "tls_ms": 263
+   "tcp_ms": 31,
+   "tls_ms": 289
   },
   {
    "group": "all",
    "ip": "162.159.136.89",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 274
+   "tcp_ms": 13,
+   "tls_ms": 220
   },
   {
    "group": "all",
    "ip": "162.159.58.65",
    "port": 443,
-   "tcp_ms": 21,
-   "tls_ms": 308
+   "tcp_ms": 6,
+   "tls_ms": 230
   },
   {
    "group": "all",
    "ip": "172.64.229.7",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 213
+   "tcp_ms": 18,
+   "tls_ms": 226
   },
   {
    "group": "all",
    "ip": "104.26.5.134",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 239
+   "tcp_ms": 38,
+   "tls_ms": 314
   },
   {
    "group": "all",
    "ip": "162.159.137.204",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 306
+   "tcp_ms": 9,
+   "tls_ms": 188
   },
   {
    "group": "all",
    "ip": "162.159.128.253",
    "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 208
+   "tcp_ms": 8,
+   "tls_ms": 243
   },
   {
    "group": "all",
    "ip": "104.26.3.162",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 248
+   "tcp_ms": 33,
+   "tls_ms": 227
   },
   {
    "group": "all",
    "ip": "104.26.8.117",
    "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 258
+   "tcp_ms": 35,
+   "tls_ms": 256
   },
   {
    "group": "all",
    "ip": "162.159.140.116",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 209
+   "tcp_ms": 8,
+   "tls_ms": 270
   },
   {
    "group": "all",
    "ip": "104.18.81.19",
    "port": 443,
-   "tcp_ms": 17,
-   "tls_ms": 208
+   "tcp_ms": 14,
+   "tls_ms": 255
   },
   {
    "group": "all",
    "ip": "104.18.89.52",
    "port": 443,
-   "tcp_ms": 11,
-   "tls_ms": 240
+   "tcp_ms": 17,
+   "tls_ms": 136
   },
   {
    "group": "all",
    "ip": "104.18.166.129",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 166
+   "tcp_ms": 24,
+   "tls_ms": 277
   },
   {
    "group": "all",
    "ip": "198.41.208.224",
    "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 143
+   "tcp_ms": 22,
+   "tls_ms": 139
   },
   {
    "group": "all",
    "ip": "104.19.148.121",
    "port": 443,
-   "tcp_ms": 35,
-   "tls_ms": 191
+   "tcp_ms": 16,
+   "tls_ms": 289
   },
   {
    "group": "all",
    "ip": "104.17.162.3",
    "port": 443,
-   "tcp_ms": 23,
-   "tls_ms": 154
+   "tcp_ms": 17,
+   "tls_ms": 307
   },
   {
    "group": "all",
    "ip": "104.18.151.172",
    "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 95
+   "tcp_ms": 31,
+   "tls_ms": 243
   },
   {
    "group": "all",
    "ip": "104.17.139.37",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 157
+   "tcp_ms": 24,
+   "tls_ms": 296
   },
   {
    "group": "all",
    "ip": "104.19.220.22",
    "port": 443,
-   "tcp_ms": 54,
-   "tls_ms": 199
+   "tcp_ms": 34,
+   "tls_ms": 197
   },
   {
    "group": "all",
    "ip": "104.19.154.200",
    "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 126
+   "tcp_ms": 15,
+   "tls_ms": 213
   },
   {
    "group": "all",
    "ip": "104.18.255.167",
    "port": 443,
-   "tcp_ms": 22,
-   "tls_ms": 184
+   "tcp_ms": 14,
+   "tls_ms": 164
   },
   {
    "group": "all",
    "ip": "104.19.212.207",
    "port": 443,
-   "tcp_ms": 56,
-   "tls_ms": 270
+   "tcp_ms": 49,
+   "tls_ms": 214
   },
   {
    "group": "all",
    "ip": "104.17.69.244",
    "port": 443,
-   "tcp_ms": 13,
-   "tls_ms": 135
+   "tcp_ms": 25,
+   "tls_ms": 261
   },
   {
    "group": "all",
    "ip": "104.31.16.158",
    "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 196
+   "tcp_ms": 10,
+   "tls_ms": 276
   },
   {
    "group": "all",
    "ip": "104.17.167.134",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 150
+   "tcp_ms": 19,
+   "tls_ms": 263
   },
   {
    "group": "all",
    "ip": "104.18.223.253",
    "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 195
+   "tcp_ms": 27,
+   "tls_ms": 281
   },
   {
    "group": "all",
    "ip": "104.16.105.166",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 260
+   "tcp_ms": 18,
+   "tls_ms": 200
   },
   {
    "group": "all",
    "ip": "104.17.142.212",
    "port": 443,
-   "tcp_ms": 55,
-   "tls_ms": 260
+   "tcp_ms": 16,
+   "tls_ms": 214
   },
   {
    "group": "all",
    "ip": "104.18.189.153",
    "port": 443,
-   "tcp_ms": 33,
-   "tls_ms": 206
+   "tcp_ms": 27,
+   "tls_ms": 239
   },
   {
    "group": "all",
    "ip": "104.16.65.1",
    "port": 443,
-   "tcp_ms": 46,
-   "tls_ms": 332
+   "tcp_ms": 19,
+   "tls_ms": 233
   },
   {
    "group": "all",
-   "ip": "162.159.145.200",
+   "ip": "172.66.214.218",
    "port": 443,
-   "tcp_ms": 15,
-   "tls_ms": 196
-  },
-  {
-   "group": "all",
-   "ip": "172.67.66.191",
-   "port": 443,
-   "tcp_ms": 35,
+   "tcp_ms": 40,
    "tls_ms": 267
   },
   {
    "group": "all",
-   "ip": "104.17.217.34",
+   "ip": "172.66.140.250",
    "port": 443,
-   "tcp_ms": 53,
-   "tls_ms": 265
+   "tcp_ms": 16,
+   "tls_ms": 243
   },
   {
    "group": "all",
-   "ip": "104.17.219.107",
+   "ip": "104.26.4.126",
    "port": 443,
-   "tcp_ms": 32,
-   "tls_ms": 196
+   "tcp_ms": 37,
+   "tls_ms": 250
   },
   {
    "group": "all",
-   "ip": "104.16.251.194",
-   "port": 443,
-   "tcp_ms": 12,
-   "tls_ms": 162
-  },
-  {
-   "group": "all",
-   "ip": "104.17.148.231",
-   "port": 443,
-   "tcp_ms": 20,
-   "tls_ms": 227
-  },
-  {
-   "group": "all",
-   "ip": "104.17.137.199",
+   "ip": "172.66.202.151",
    "port": 443,
    "tcp_ms": 31,
-   "tls_ms": 278
+   "tls_ms": 234
   },
   {
    "group": "all",
-   "ip": "162.159.237.220",
+   "ip": "104.17.173.96",
    "port": 443,
-   "tcp_ms": 30,
-   "tls_ms": 185
+   "tcp_ms": 38,
+   "tls_ms": 257
   },
   {
    "group": "all",
-   "ip": "104.17.146.8",
+   "ip": "104.16.225.70",
    "port": 443,
-   "tcp_ms": 22,
-   "tls_ms": 247
+   "tcp_ms": 49,
+   "tls_ms": 274
   },
   {
    "group": "all",
-   "ip": "104.17.145.102",
+   "ip": "104.17.193.195",
    "port": 443,
-   "tcp_ms": 16,
-   "tls_ms": 236
-  },
-  {
-   "group": "all",
-   "ip": "104.16.67.131",
-   "port": 443,
-   "tcp_ms": 9,
-   "tls_ms": 235
-  },
-  {
-   "group": "all",
-   "ip": "162.159.135.134",
-   "port": 443,
-   "tcp_ms": 19,
-   "tls_ms": 189
-  },
-  {
-   "group": "all",
-   "ip": "104.19.28.122",
-   "port": 443,
-   "tcp_ms": 16,
+   "tcp_ms": 14,
    "tls_ms": 198
   },
   {
    "group": "all",
-   "ip": "104.17.186.46",
+   "ip": "104.16.138.76",
+   "port": 443,
+   "tcp_ms": 17,
+   "tls_ms": 227
+  },
+  {
+   "group": "all",
+   "ip": "104.16.183.21",
+   "port": 443,
+   "tcp_ms": 46,
+   "tls_ms": 283
+  },
+  {
+   "group": "all",
+   "ip": "104.18.49.121",
    "port": 443,
    "tcp_ms": 22,
-   "tls_ms": 194
+   "tls_ms": 213
   },
   {
    "group": "all",
-   "ip": "104.16.158.215",
+   "ip": "162.159.139.158",
    "port": 443,
    "tcp_ms": 9,
-   "tls_ms": 187
+   "tls_ms": 229
   },
   {
    "group": "all",
-   "ip": "172.66.132.151",
+   "ip": "104.25.21.187",
    "port": 443,
-   "tcp_ms": 40,
-   "tls_ms": 202
+   "tcp_ms": 53,
+   "tls_ms": 267
   },
   {
    "group": "all",
-   "ip": "172.66.208.129",
+   "ip": "104.25.5.170",
    "port": 443,
-   "tcp_ms": 51,
-   "tls_ms": 172
+   "tcp_ms": 50,
+   "tls_ms": 286
   },
   {
    "group": "all",
-   "ip": "172.66.140.22",
+   "ip": "104.24.203.229",
+   "port": 443,
+   "tcp_ms": 28,
+   "tls_ms": 257
+  },
+  {
+   "group": "all",
+   "ip": "172.66.140.213",
+   "port": 443,
+   "tcp_ms": 28,
+   "tls_ms": 245
+  },
+  {
+   "group": "all",
+   "ip": "104.17.217.29",
+   "port": 443,
+   "tcp_ms": 19,
+   "tls_ms": 244
+  },
+  {
+   "group": "all",
+   "ip": "104.17.254.156",
+   "port": 443,
+   "tcp_ms": 11,
+   "tls_ms": 218
+  },
+  {
+   "group": "all",
+   "ip": "104.18.177.153",
+   "port": 443,
+   "tcp_ms": 17,
+   "tls_ms": 212
+  },
+  {
+   "group": "all",
+   "ip": "104.17.235.129",
+   "port": 443,
+   "tcp_ms": 14,
+   "tls_ms": 231
+  },
+  {
+   "group": "all",
+   "ip": "104.17.156.20",
+   "port": 443,
+   "tcp_ms": 17,
+   "tls_ms": 177
+  },
+  {
+   "group": "all",
+   "ip": "104.17.243.85",
+   "port": 443,
+   "tcp_ms": 38,
+   "tls_ms": 220
+  },
+  {
+   "group": "all",
+   "ip": "104.16.63.39",
+   "port": 443,
+   "tcp_ms": 20,
+   "tls_ms": 198
+  },
+  {
+   "group": "all",
+   "ip": "104.16.38.132",
+   "port": 443,
+   "tcp_ms": 30,
+   "tls_ms": 186
+  },
+  {
+   "group": "all",
+   "ip": "104.17.119.222",
    "port": 443,
    "tcp_ms": 36,
-   "tls_ms": 182
+   "tls_ms": 183
   },
   {
    "group": "all",
-   "ip": "172.66.215.117",
-   "port": 443,
-   "tcp_ms": 33,
-   "tls_ms": 168
-  },
-  {
-   "group": "all",
-   "ip": "172.66.213.111",
-   "port": 443,
-   "tcp_ms": 35,
-   "tls_ms": 137
-  },
-  {
-   "group": "all",
-   "ip": "172.66.202.117",
-   "port": 443,
-   "tcp_ms": 35,
-   "tls_ms": 143
-  },
-  {
-   "group": "all",
-   "ip": "172.66.0.105",
+   "ip": "104.17.170.249",
    "port": 443,
    "tcp_ms": 16,
-   "tls_ms": 90
+   "tls_ms": 144
   },
   {
    "group": "all",
-   "ip": "172.66.136.247",
+   "ip": "104.16.47.202",
    "port": 443,
-   "tcp_ms": 60,
-   "tls_ms": 133
+   "tcp_ms": 15,
+   "tls_ms": 60
   },
   {
    "group": "all",
-   "ip": "172.66.206.2",
+   "ip": "172.64.234.148",
    "port": 443,
-   "tcp_ms": 65,
-   "tls_ms": 136
+   "tcp_ms": 9,
+   "tls_ms": 47
   },
   {
    "group": "all",
-   "ip": "172.66.216.88",
+   "ip": "104.24.162.89",
    "port": 443,
-   "tcp_ms": 59,
-   "tls_ms": 126
+   "tcp_ms": 29,
+   "tls_ms": 88
   },
   {
    "group": "all",
-   "ip": "104.16.148.179",
+   "ip": "104.16.40.30",
    "port": 443,
-   "tcp_ms": 10,
-   "tls_ms": 49
+   "tcp_ms": 12,
+   "tls_ms": 54
   },
   {
    "group": "all",
-   "ip": "104.16.29.145",
+   "ip": "104.16.80.201",
    "port": 443,
-   "tcp_ms": 8,
-   "tls_ms": 37
+   "tcp_ms": 24,
+   "tls_ms": 71
+  },
+  {
+   "group": "all",
+   "ip": "104.16.186.137",
+   "port": 443,
+   "tcp_ms": 31,
+   "tls_ms": 85
   }
  ]
 }
