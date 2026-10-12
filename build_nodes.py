@@ -530,8 +530,30 @@ def group_by_country(nodes):
     return dict(sorted(g.items(), key=lambda kv: (-len(kv[1]), kv[0])))
 
 
-def build_nodes_txt(nodes):
+def load_edge_entries():
+    """入口地址：优先用 build_cfip.py 产出的优选IP（延迟低），没有就用内置优选域名"""
+    p = os.path.join(OUT_DIR, "cfip.txt")
+    hosts = []
+    if os.path.isfile(p):
+        try:
+            with open(p, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    hosts.append(line.split("#")[0].strip())
+        except Exception:
+            hosts = []
+    if hosts:
+        log("入口使用优选IP: %d 个（来自 public/cfip.txt）" % len(hosts))
+        return hosts
+    log("入口使用内置优选域名: %d 个（未找到 public/cfip.txt）" % len(EDGE_HOSTS))
+    return ["%s:443" % h for h in EDGE_HOSTS]
+
+
+def build_nodes_txt(nodes, entries=None):
     """只输出住宅节点（机房节点一律不写入 —— 用户要求「只要住宅 IP」）"""
+    entries = entries or load_edge_entries()
     lines, idx = [], 0
     for code, grp in group_by_country(nodes).items():
         zh = country_name(code)
@@ -540,15 +562,15 @@ def build_nodes_txt(nodes):
         if dc and not KEEP_RESIDENTIAL_ONLY:
             log("   （同时输出 %d 个非住宅节点，因为它们没被过滤）" % len(dc))
         for i, n in enumerate(res, 1):
-            e = EDGE_HOSTS[idx % len(EDGE_HOSTS)]
+            e = entries[idx % len(entries)]
             idx += 1
-            lines.append("%s:443#%s-住宅-%02d$sstp://vpn:vpn@%s:%d" % (e, zh, i, n["ip"], n["port"]))
+            lines.append("%s#%s-住宅-%02d$sstp://vpn:vpn@%s:%d" % (e, zh, i, n["ip"], n["port"]))
         if KEEP_RESIDENTIAL_ONLY:
             continue                        # 硬保证：只有住宅 IP 会出现在清单里
         for i, n in enumerate(dc, 1):
-            e = EDGE_HOSTS[idx % len(EDGE_HOSTS)]
+            e = entries[idx % len(entries)]
             idx += 1
-            lines.append("%s:443#%s-机房-%02d$sstp://vpn:vpn@%s:%d" % (e, zh, i, n["ip"], n["port"]))
+            lines.append("%s#%s-机房-%02d$sstp://vpn:vpn@%s:%d" % (e, zh, i, n["ip"], n["port"]))
     return "\n".join(lines) + ("\n" if lines else "")
 
 

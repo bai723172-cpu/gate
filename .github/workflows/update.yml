@@ -38,7 +38,12 @@ jobs:
       - name: 安装依赖
         run: pip install --quiet requests
 
-      - name: 抓取 + 验证 + 生成节点清单
+      - name: ① 抓取 + 验证 Cloudflare 优选IP（低延迟边缘）
+        run: |
+          set -o pipefail
+          python build_cfip.py 2>&1 | tee cfip.log
+
+      - name: ② 抓取 + 验证住宅节点（TCP+TLS 双重验证，只留住宅）
         run: |
           set -o pipefail
           python build_nodes.py 2>&1 | tee run.log
