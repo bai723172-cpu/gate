@@ -302,7 +302,7 @@ const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.4.1",
+  version: "0.5.0",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
@@ -353,8 +353,31 @@ module.exports = {
     };
   },
 
+  /** 歌词：DJ 站本身没有歌词接口，这里用网易云做兜底（查不到就返回空，不报错） */
   async getLyric(musicItem) {
-    return { rawLrc: "" };
+    try {
+      const raw = `${musicItem.artist || ""} ${musicItem.title || ""}`
+        .replace(/^\[[^\]]+\]\s*/, "")
+        .replace(/\(.*?Rmx.*?\)|\(.*?Remix.*?\)/gi, " ")
+        .replace(/[-—|]/g, " ")
+        .trim();
+      const q = encodeURIComponent(raw);
+      const s = await http.get(`https://music.163.com/api/search/get/web?s=${q}&type=1&limit=1`, {
+        headers: { ...HEADERS, Referer: "https://music.163.com/" },
+        validateStatus: () => true,
+      });
+      const d = typeof s.data === "string" ? JSON.parse(s.data) : s.data;
+      const song = d && d.result && d.result.songs && d.result.songs[0];
+      if (!song) return { rawLrc: "" };
+      const l = await http.get(`https://music.163.com/api/song/lyric?id=${song.id}&lv=1&kv=1&tv=-1`, {
+        headers: { ...HEADERS, Referer: "https://music.163.com/" },
+        validateStatus: () => true,
+      });
+      const ld = typeof l.data === "string" ? JSON.parse(l.data) : l.data;
+      return { rawLrc: (ld && ld.lrc && ld.lrc.lyric) || "" };
+    } catch (e) {
+      return { rawLrc: "" };
+    }
   },
 
   /** 榜单/分类入口（MusicFree 侧边栏） */
