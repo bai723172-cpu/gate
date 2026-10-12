@@ -201,24 +201,9 @@ const SITES = {
     name: "82DJ",
     base: "https://www.82dj.com",
     async search(query, page) {
-      // 站内搜索走 ajax 接口 /index/index/del_search（参数 search）
-      try {
-        const r = await http.get(`${this.base}/index/index/del_search?search=${encodeURIComponent(query)}&page=${page}`, {
-          headers: { ...HEADERS, Referer: this.base + "/search?keys=" + encodeURIComponent(query), "X-Requested-With": "XMLHttpRequest" },
-          responseType: "text",
-          transformResponse: [(d) => d],
-          validateStatus: () => true,
-        });
-        const txt = typeof r.data === "string" ? r.data : JSON.stringify(r.data);
-        const list = [];
-        for (const mm of txt.matchAll(/"id"\s*:\s*(\d+)[\s\S]{0,400}?"title"\s*:\s*"([^"]{2,80})"/g)) {
-          if (list.some((x) => x.songId === mm[1])) continue;
-          list.push({ songId: mm[1], title: mm[2], artist: mm[2].split("-")[0].trim() || "DJ" });
-        }
-        if (list.length) return { list, isEnd: list.length === 0 };
-      } catch (e) {
-        /* 接口失败则退回首页列表 */
-      }
+      // 注：本站搜索结果是 JS 动态渲染，页面里没有可用的公开搜索 ajax 接口
+      //     （站点提供的是 /index/index/del_search 这类历史记录接口，不是搜索）
+      //     因此这里用首页最新列表兜底：至少能浏览最新发布的舞曲
       if (page > 1) return { list: [], isEnd: true };
       const { data: html } = await http.get(`${this.base}/`, {
         headers: { ...HEADERS, Referer: this.base + "/" },
@@ -319,7 +304,7 @@ const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.6.0",
+  version: "0.6.1",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
