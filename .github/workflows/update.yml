@@ -1,1 +1,80 @@
+name: 更新住宅节点（每日自动）
 
+# ===========================================================================
+# 每天自动：抓取 VPN Gate 住宅节点 → 逐个验证（TCP + TLS 握手）→ 剔除不合格
+#           → 生成 public/nodes.txt → 有变化才提交回仓库
+#
+# 不需要配置任何 Secret ✓  （验证在 GitHub 的服务器上完成，不依赖 Cloudflare Worker）
+#
+# edgetunnel「自定义优选IP / 优选API」填这个地址即可：
+#   https://raw.githubusercontent.com/bai723172-cpu/gate/main/public/nodes.txt
+# ===========================================================================
+
+on:
+  schedule:
+    - cron: '0 21 * * *'        # UTC 21:00 = 北京时间 05:00（每天一次）
+  workflow_dispatch:            # 也支持手动点一下立即运行
+
+permissions:
+  contents: write               # 需要提交 public/ 里的结果
+
+concurrency:
+  group: nodes-update
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install --quiet requests
+
+      - name: 抓取 + 验证 + 生成节点清单
+        run: |
+          set -o pipefail
+          python build_nodes.py 2>&1 | tee run.log
+
+      - name: 检查有没有变化
+        id: chk
+        run: |
+          git add -A public
+          if git diff --cached --quiet; then
+            echo "内容没有变化，本次不提交"
+            echo "changed=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "内容有变化，准备提交"
+            git diff --cached --stat
+            echo "changed=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 提交并推送（仅在有变化时）
+        if: steps.chk.outputs.changed == '1'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "自动更新住宅节点 $(date -u '+%Y-%m-%d %H:%M UTC') [skip ci]"
+          git push
+
+      - name: 写入运行摘要（Actions 页面顶部直接可见）
+        if: always()
+        run: |
+          {
+            echo "## 住宅节点更新结果"
+            echo ""
+            echo "- 内容是否变化：\`${{ steps.chk.outputs.changed }}\`"
+            echo "- 节点文件：[public/nodes.txt](https://raw.githubusercontent.com/${{ github.repository }}/main/public/nodes.txt)"
+            echo ""
+            echo "### 运行日志（最后 40 行）"
+            echo '```'
+            tail -40 run.log 2>/dev/null || echo "(无日志)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

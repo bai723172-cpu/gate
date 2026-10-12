@@ -1,6 +1,10 @@
-# 由 vpngate.py 运行时生成 (data.json + index.html), 不入库
-public/
+# 允许提交 public/ 里的节点清单（edgetunnel 要读它）
+!public/
+!public/nodes.txt
+!public/data.json
+!public/index.html
+
 __pycache__/
 *.pyc
-
-Copy
+run.log
+state/
