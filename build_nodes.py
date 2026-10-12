@@ -43,8 +43,22 @@ OUT_DIR = os.path.join(BASE_DIR, "public")
 # --------------------------------------------------------------------------
 # 配置
 # --------------------------------------------------------------------------
-# 数据源顺序：把国内可直连的镜像排在前面（Actions 上也更快）
-SOURCES = [
+# --------------------------------------------------------------------------
+# 数据源
+#   ① 官方 API（数据最全，优先）
+#   ② 自动发现：抓官方页面，提取里面出现的镜像地址
+#   ③ 静态镜像：多个已验证的镜像/加速地址（互为备份）
+# --------------------------------------------------------------------------
+OFFICIAL_SOURCES = [
+    ("official-tls", "https://www.vpngate.net/api/iphone/", "csv"),
+    ("official",     "http://www.vpngate.net/api/iphone/", "csv"),
+]
+DISCOVER_PAGES = [
+    "https://www.vpngate.net/en/",
+    "https://www.vpngate.net/ja/",
+    "https://www.vpngate.net/cn/",
+]
+STATIC_MIRRORS = [
     ("gh-proxy",    "https://gh-proxy.com/https://raw.githubusercontent.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json", "json"),
     ("jsdelivr-gc", "https://gcore.jsdelivr.net/gh/fdciabdul/Vpngate-Scraper-API@main/json/data.json", "json"),
     ("jsdelivr-fs", "https://fastly.jsdelivr.net/gh/fdciabdul/Vpngate-Scraper-API@main/json/data.json", "json"),
@@ -52,10 +66,14 @@ SOURCES = [
     ("ghproxy.net", "https://ghproxy.net/https://raw.githubusercontent.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json", "json"),
     ("jsdelivr-cd", "https://cdn.jsdelivr.net/gh/fdciabdul/Vpngate-Scraper-API@main/json/data.json", "json"),
     ("github-raw",  "https://raw.githubusercontent.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json", "json"),
-    ("official-tls","https://www.vpngate.net/api/iphone/", "csv"),
-    ("official",    "http://www.vpngate.net/api/iphone/", "csv"),
+    ("ghfast",      "https://ghfast.top/https://raw.githubusercontent.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json", "json"),
+    ("gh-llkk",     "https://gh.llkk.cc/https://raw.githubusercontent.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json", "json"),
+    ("githack",     "https://raw.githack.com/fdciabdul/Vpngate-Scraper-API/main/json/data.json", "json"),
+    # 官方 API 的备用写法
+    ("official-www", "https://www.vpngate.net/api/iphone", "csv"),
+    ("vpngate-net",  "https://vpngate.net/api/iphone/", "csv"),
 ]
-MAX_SOURCES = 5              # 凑够这么多个可用源就停止
+MAX_SOURCES = 8              # 最多用这么多个可用源（官方源总是会被尝试）
 KEEP_RESIDENTIAL_ONLY = True # 只保留住宅节点
 CHECK_CONCURRENCY = 32       # 并发验证数
 CHECK_TIMEOUT = 8            # 单个节点验证超时（秒）
@@ -153,12 +171,65 @@ def country_name(code, fallback=""):
 # --------------------------------------------------------------------------
 # 1. 抓取
 # --------------------------------------------------------------------------
+def discover_mirrors(session):
+    """自动发现：抓官方页面，把里面出现的镜像/API 地址找出来"""
+    found = []
+    skip = ("twitter.com", "x.com", "facebook.com", "youtube.com", "instagram.com",
+            "t.me", "telegram", "linkedin.com", "reddit.com", "github.com/cmliu",
+            "wikipedia", "creativecommons", ".png", ".jpg", ".css", ".js", "mailto")
+    for page in DISCOVER_PAGES:
+        try:
+            r = session.get(page, timeout=20)
+            if r.status_code != 200:
+                log("  - 发现页 %-34s HTTP %s" % (page.replace("https://", ""), r.status_code))
+                continue
+            cnt = 0
+            for m in re.finditer(r"https?://[A-Za-z0-9\.\-]+(?::\d+)?(?:/[A-Za-z0-9_\-/\.]*)?", r.text):
+                u = m.group(0).rstrip("/")
+                low = u.lower()
+                if any(s in low for s in skip):
+                    continue
+                if not ("vpngate" in low or "opengw" in low or "/api/iphone" in low):
+                    continue
+                if u in found or u in [x[1] for x in OFFICIAL_SOURCES]:
+                    continue
+                found.append(u)
+                cnt += 1
+                if cnt >= 6:
+                    break
+            log("  + 发现页 %-34s 提取到 %d 个候选" % (page.replace("https://", ""), cnt))
+        except Exception as exc:
+            log("  - 发现页 %-34s %s" % (page.replace("https://", ""), str(exc)[:50]))
+    return found
+
+
+def collect_sources(session):
+    """汇总所有数据源：官方优先 → 自动发现 → 静态镜像"""
+    out = list(OFFICIAL_SOURCES)
+    names = set(n for n, _, _ in out)
+    for i, u in enumerate(discover_mirrors(session)):
+        kind = "json" if ("json" in u or "jsdelivr" in u or "raw.github" in u or "gh-proxy" in u) else "csv"
+        nm = "discovered-%d" % (i + 1)
+        if nm not in names:
+            out.append((nm, u, kind))
+            names.add(nm)
+    for item in STATIC_MIRRORS:
+        if item[1] not in [x[1] for x in out]:
+            out.append(item)
+    log("数据源共 %d 个（官方 %d + 发现 %d + 静态 %d）"
+        % (len(out), len(OFFICIAL_SOURCES), len(out) - len(OFFICIAL_SOURCES) - len(STATIC_MIRRORS), len(STATIC_MIRRORS)))
+    return out
+
+
 def fetch_rows():
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
     rows, usable = [], []
-    for name, url, kind in SOURCES:
+    seen_fp = set()
+    sources = collect_sources(session)
+    for name, url, kind in sources:
         if len(usable) >= MAX_SOURCES:
+            log("已凑够 %d 个可用源，停止尝试" % len(usable))
             break
         try:
             t0 = time.time()
@@ -200,9 +271,15 @@ def fetch_rows():
             else:
                 got = parse_csv(r.text)
             if got:
+                fp = hash(tuple(sorted((r0["host"].lower(), r0["ip"]) for r0 in got)))
                 rows.extend(got)
-                usable.append(name)
-                log("  v %-12s %d 行 (%.1fs)" % (name, len(got), time.time() - t0))
+                if fp in seen_fp:
+                    # 同一个镜像的不同加速地址，内容一样 -> 合并数据但不重复计数
+                    log("  = %-12s %d 行（内容与前面某个源相同，不重复计数）" % (name, len(got)))
+                else:
+                    seen_fp.add(fp)
+                    usable.append(name)
+                    log("  v %-12s %d 行 (%.1fs)" % (name, len(got), time.time() - t0))
             else:
                 log("  x %-12s 解析出 0 行" % name)
         except Exception as exc:
@@ -454,15 +531,20 @@ def group_by_country(nodes):
 
 
 def build_nodes_txt(nodes):
+    """只输出住宅节点（机房节点一律不写入 —— 用户要求「只要住宅 IP」）"""
     lines, idx = [], 0
     for code, grp in group_by_country(nodes).items():
         zh = country_name(code)
         res = [n for n in grp if n.get("kind") == "residential"]
         dc = [n for n in grp if n.get("kind") != "residential"]
+        if dc and not KEEP_RESIDENTIAL_ONLY:
+            log("   （同时输出 %d 个非住宅节点，因为它们没被过滤）" % len(dc))
         for i, n in enumerate(res, 1):
             e = EDGE_HOSTS[idx % len(EDGE_HOSTS)]
             idx += 1
             lines.append("%s:443#%s-住宅-%02d$sstp://vpn:vpn@%s:%d" % (e, zh, i, n["ip"], n["port"]))
+        if KEEP_RESIDENTIAL_ONLY:
+            continue                        # 硬保证：只有住宅 IP 会出现在清单里
         for i, n in enumerate(dc, 1):
             e = EDGE_HOSTS[idx % len(EDGE_HOSTS)]
             idx += 1
