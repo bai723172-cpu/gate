@@ -279,20 +279,33 @@ const SITES = {
       return { list, isEnd: list.length === 0 };
     },
     async media(songId) {
-      const page = `${this.base}/djplay/music${songId}.html`;
-      const r = await http.get(page, {
-        headers: { ...HEADERS, Referer: this.base + "/" },
-        responseType: "arraybuffer",
-        validateStatus: () => true,
-      });
-      const html = decodeGbk(r.data);
-      const m = html.match(/https?:\/\/[^\s"'<>]+\.(?:mp3|m4a|m3u8)[^\s"'<>]*/i);
-      if (!m) {
-        // 实测结论：西西DJ 播放页不直接给音频地址（走站内播放条 JS 动态取），
-        // 因此这里明确报错，避免返回一个播不了的地址。
-        throw new Error("西西DJ：该曲目音频由站内播放器动态获取，插件暂无法直链播放");
+      // 实测可用（已用 HTTP 206 + audio/mpeg 验证）：
+      //   播放器 JS 用 /template/zhzh_dzmusic/ajax/?action=geturl 取音频
+      //   返回 data[0].src = 相对路径
+      //        data[0].ser = [{ u: "https://preview-src.dj.net:4431/" }]  ← 媒体域名
+      const api = `${this.base}/template/zhzh_dzmusic/ajax/?action=geturl&id=${songId}`;
+      const hdr = {
+        ...HEADERS,
+        Referer: `${this.base}/djplay/music${songId}.html`,
+        "X-Requested-With": "XMLHttpRequest",
+      };
+      const r = await http.get(api, { headers: hdr, responseType: "arraybuffer", validateStatus: () => true });
+      let src = "";
+      let host = "";
+      try {
+        const j = JSON.parse(decodeGbk(r.data));
+        const d = (j && j.data && j.data[0]) || {};
+        src = d.src || "";
+        const ser = d.ser;
+        if (Array.isArray(ser) && ser[0] && ser[0].u) host = ser[0].u;
+        else if (typeof ser === "string") host = ser;
+      } catch (e) {
+        /* 解析失败 → 下面统一报错 */
       }
-      return m[0].replace(/&amp;/g, "&");
+      if (!src) throw new Error("西西DJ：geturl 接口没有返回音频地址（曲目可能已下架）");
+      if (/^https?:\/\//i.test(src)) return src;
+      const base = (host || "https://preview-src.dj.net:4431/").replace(/\/+$/, "/");
+      return base + encodeURI(src);
     },
   },
 };
@@ -304,7 +317,7 @@ const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.6.1",
+  version: "0.7.0",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
