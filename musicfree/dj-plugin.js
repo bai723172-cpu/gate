@@ -285,7 +285,12 @@ const SITES = {
       });
       const html = decodeGbk(r.data);
       const m = html.match(/https?:\/\/[^\s"'<>]+\.(?:mp3|m4a|m3u8)[^\s"'<>]*/i);
-      return m ? m[0].replace(/&amp;/g, "&") : null;
+      if (!m) {
+        // 实测结论：西西DJ 播放页不直接给音频地址（走站内播放条 JS 动态取），
+        // 因此这里明确报错，避免返回一个播不了的地址。
+        throw new Error("西西DJ：该曲目音频由站内播放器动态获取，插件暂无法直链播放");
+      }
+      return m[0].replace(/&amp;/g, "&");
     },
   },
 };
@@ -297,7 +302,7 @@ const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.4.0",
+  version: "0.4.1",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
