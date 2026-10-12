@@ -138,14 +138,19 @@ const SITES = {
     name: "多多DJ",
     base: "http://www.duoduodj.com",
     async search(query, page) {
-      // 该站首次访问会 set-cookie ok=1 并跳转，所以手动带上 cookie 再请求一次
-      const cookie = "ok=1";
+      // 该站首次访问会 Set-Cookie(ok / ASPSESSIONID) 并跳转 -> 必须请求两次并转发 cookie
       const url = `${this.base}/so.asp?k=${encodeURIComponent(query)}`;
-      const { data: html } = await http.get(url, {
-        headers: { ...HEADERS, Referer: this.base + "/", Cookie: cookie },
+      const opt = {
+        headers: { ...HEADERS, Referer: this.base + "/" },
         responseType: "text",
         transformResponse: [(d) => d],
-      });
+        validateStatus: () => true,
+      };
+      const r1 = await http.get(url, opt);
+      const sc = r1.headers["set-cookie"];
+      const cookie = Array.isArray(sc) ? sc.map((c) => String(c).split(";")[0]).join("; ") : (sc ? String(sc).split(";")[0] : "ok=1");
+      const r2 = await http.get(url, { ...opt, headers: { ...opt.headers, Cookie: cookie } });
+      const html = r2.data;
       const $ = cheerio.load(html);
       const list = [];
       $("a").each((_, el) => {
@@ -198,6 +203,28 @@ const SITES = {
       return { list: list.slice(0, 30), isEnd: true };
     },
     async media(songId) {
+      const hdr = {
+        ...HEADERS,
+        Referer: `${this.base}/play/${songId}`,
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      };
+      // 站点的播放详情来自 /index/index/ajax_details（需要 type 参数，逐个试）
+      for (const type of [1, 2, 0, 3, 4, 5, 6]) {
+        try {
+          const r = await http.post(`${this.base}/index/index/ajax_details`, `id=${songId}&type=${type}`, {
+            headers: hdr,
+            validateStatus: () => true,
+            transformResponse: [(d) => d],
+          });
+          const txt = typeof r.data === "string" ? r.data : JSON.stringify(r.data);
+          const mm = txt.match(/https?:\/\/[^\s"'<>]+\.(?:mp3|m4a|m3u8)[^\s"'<>]*/i);
+          if (mm) return mm[0].replace(/&amp;/g, "&");
+        } catch (e) {
+          /* 试下一个 type */
+        }
+      }
+      // 兜底：详情页里直接找
       const { data: html } = await http.get(`${this.base}/play/${songId}`, {
         headers: { ...HEADERS, Referer: `${this.base}/play/${songId}` },
         responseType: "text",
@@ -216,7 +243,7 @@ const SITE_ORDER = ["ddddj", "djuu", "duoduodj", "dj82"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.1.0",
+  version: "0.2.0",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
