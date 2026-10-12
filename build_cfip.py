@@ -61,9 +61,15 @@ TZ_CN = timezone(timedelta(hours=8))
 
 # 优选IP API（排名由这些服务在国内按运营商实测得出）
 APIS = [
+    # ① 指定的三条线路（电信 / 联通 / 移动）
+    ("ct",   "https://cf.090227.xyz/ct?ips=6&port=443"),
+    ("cu",   "https://cf.090227.xyz/cu?port=443"),
+    ("cmcc", "https://cf.090227.xyz/cmcc?ips=8&port=443"),
+    # ② 同一服务的更大候选量版本（同一 IP 去重，不会重复计数）
     ("ct",   "https://cf.090227.xyz/ct?ips=20&port=443"),
     ("cu",   "https://cf.090227.xyz/cu?ips=20&port=443"),
     ("cmcc", "https://cf.090227.xyz/cmcc?ips=20&port=443"),
+    # ③ 聚合站（补充）
     ("all",  "https://api.uouin.com/cloudflare.html"),
     ("all",  "https://www.wetest.vip/page/cloudflare/address_v4.html"),
     ("all",  "https://ipdb.api.030101.xyz/?type=bestcf&country=true"),
