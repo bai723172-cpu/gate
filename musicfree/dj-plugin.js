@@ -229,7 +229,25 @@ const SITES = {
         "X-Requested-With": "XMLHttpRequest",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
       };
-      // 站点的播放详情来自 /index/index/ajax_details（需要 type 参数，逐个试）
+      // ✅ 实测可用（站点公开的免费试听，64KB 预览）：
+      //   GET /index/index/get_cookie?id=<id>
+      //   → data[0].path = https://mp3.82dj.com/82dj/64KB/chuanshao/2026/1078/xxx.mp4
+      try {
+        const r0 = await http.get(`${this.base}/index/index/get_cookie?id=${songId}`, {
+          headers: hdr,
+          validateStatus: () => true,
+          transformResponse: [(d) => d],
+        });
+        const t0 = typeof r0.data === "string" ? r0.data : JSON.stringify(r0.data);
+        const p0 = t0.match(/"path"\s*:\s*"([^"]+)"/);
+        if (p0) {
+          const u0 = p0[1].replace(/\\\//g, "/").replace(/&amp;/g, "&");
+          if (/^https?:\/\//i.test(u0)) return u0;
+        }
+      } catch (e) {
+        /* 失败则继续尝试下面的方式 */
+      }
+      // 其次：站点的播放详情来自 /index/index/ajax_details（需要 type 参数，逐个试）
       for (const type of [1, 2, 0, 3, 4, 5, 6]) {
         try {
           const r = await http.post(`${this.base}/index/index/ajax_details`, `id=${songId}&type=${type}`, {
@@ -317,7 +335,7 @@ const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.7.0",
+  version: "0.8.0",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
