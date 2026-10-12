@@ -32,6 +32,20 @@ const http = axios.create({
   // 手机/桌面端都是本地网络直连，这里不设置代理
 });
 
+/** GBK 解码（该站是 GBK；TextDecoder 不支持时退化为 UTF-8） */
+function decodeGbk(buf) {
+  try {
+    if (typeof buf === "string") return buf;
+    const bytes = buf instanceof ArrayBuffer ? new Uint8Array(buf) : new Uint8Array(buf.buffer || buf);
+    if (typeof TextDecoder !== "undefined") {
+      try { return new TextDecoder("gbk").decode(bytes); } catch (e) { return new TextDecoder("utf-8").decode(bytes); }
+    }
+    return String.fromCharCode.apply(null, Array.prototype.slice.call(bytes));
+  } catch (e) {
+    return "";
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* 站点定义                                                            */
 /* ------------------------------------------------------------------ */
@@ -240,14 +254,51 @@ const SITES = {
   },
 };
 
-const SITE_ORDER = ["ddddj", "djuu", "duoduodj", "dj82"];
+  djnet: {
+    name: "西西DJ",
+    base: "https://www.dj.net",
+    async search(query, page) {
+      // 该站是 GBK + Discuz：搜索受编码限制，这里用站内音乐搜索（ASCII 关键词最稳）
+      const url = `${this.base}/search.php?mod=music&srchtxt=${encodeURIComponent(query)}&searchsubmit=yes`;
+      const r = await http.get(url, {
+        headers: { ...HEADERS, Referer: this.base + "/" },
+        responseType: "arraybuffer",
+        validateStatus: () => true,
+      });
+      const html = decodeGbk(r.data);
+      const $ = cheerio.load(html);
+      const list = [];
+      $('a[href*="/djplay/music"]').each((_, el) => {
+        const href = $(el).attr("href") || "";
+        const m = href.match(/music(\d+)\.html/);
+        const title = ($(el).text() || "").trim();
+        if (!m || !title || title.length < 3) return;
+        if (list.some((x) => x.songId === m[1])) return;
+        list.push({ songId: m[1], title, artist: title.split("-")[0].trim() || "DJ" });
+      });
+      return { list, isEnd: list.length === 0 };
+    },
+    async media(songId) {
+      const page = `${this.base}/djplay/music${songId}.html`;
+      const r = await http.get(page, {
+        headers: { ...HEADERS, Referer: this.base + "/" },
+        responseType: "arraybuffer",
+        validateStatus: () => true,
+      });
+      const html = decodeGbk(r.data);
+      const m = html.match(/https?:\/\/[^\s"'<>]+\.(?:mp3|m4a|m3u8)[^\s"'<>]*/i);
+      return m ? m[0].replace(/&amp;/g, "&") : null;
+    },
+  },
+
+const SITE_ORDER = ["ddddj", "duoduodj", "djuu", "dj82", "djnet"];
 
 /* ------------------------------------------------------------------ */
 /* MusicFree 插件接口                                                  */
 /* ------------------------------------------------------------------ */
 module.exports = {
   platform: "DJ舞曲合集",
-  version: "0.3.0",
+  version: "0.4.0",
   author: "zhuli",
   srcUrl: "",
   cacheControl: "no-cache",
